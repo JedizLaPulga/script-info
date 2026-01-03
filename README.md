@@ -22,12 +22,16 @@ Script Info is a powerful, cross-platform Python tool that gathers detailed syst
 
 | Category | Details |
 |----------|---------|
-| **Operating System** | Name, version, release, architecture |
-| **CPU** | Physical/logical cores, frequency |
-| **Memory** | Total, available, usage percentage |
-| **Storage** | Total/free space, usage percentage |
-| **Network** | Hostname, IP address |
-| **System** | Boot time, current user, Python version |
+| **Operating System** | Name, version, release, platform, architecture, processor |
+| **CPU** | Physical/logical cores, frequency, usage %, user/system/idle times |
+| **Memory** | Total, available, used, usage % (RAM + Swap) |
+| **Storage** | Total/used/free space, usage %, read/write I/O |
+| **Network** | Hostname, FQDN, IP, bytes/packets sent/received |
+| **System** | Boot time, uptime, current/logged-in users, total processes |
+| **Battery** | Percentage, plugged status, time remaining (if applicable) |
+| **Hardware Sensors** | Temperatures, fan speeds (if supported) |
+| **Runtime** | Python version, implementation, compiler |
+| **Performance** | System load averages (Unix-like systems) |
 
 ## 🚀 Installation
 
@@ -87,24 +91,56 @@ Collecting system information...
 
 System Information:
 ==================================================
-OS: Windows
+OS Name: Windows
 OS Version: 10.0.26100
 OS Release: 11
+OS Platform: Windows-11-10.0.26100-SP0
 Architecture: AMD64
-CPU Cores (Physical): 4
-CPU Cores (Logical): 8
-CPU Frequency (MHz): 1198.0
+Processor: Intel64 Family 6 Model 140 Stepping 1, GenuineIntel
+CPU Physical Cores: 4
+CPU Logical Cores: 8
+CPU Frequency (MHz): 2995.0
+CPU Usage (%): 15.2
+CPU User Time: 20879.12s
+CPU System Time: 14460.30s
+CPU Idle Time: 195582.52s
 Total Memory (GB): 31.69
-Available Memory (GB): 21.51
-Memory Usage (%): 32.1
+Available Memory (GB): 21.03
+Used Memory (GB): 10.66
+Memory Usage (%): 33.6
+Total Swap (GB): 2.0
+Used Swap (GB): 0.0
+Free Swap (GB): 2.0
+Swap Usage (%): 0.0
 Total Disk Space (GB): 475.57
-Free Disk Space (GB): 317.78
+Used Disk Space (GB): 158.07
+Free Disk Space (GB): 317.5
 Disk Usage (%): 33.2
+Disk Read (MB): 31813.12
+Disk Write (MB): 46247.67
 Hostname: User
-IP Address: 192.168.0.102
+FQDN: User
+IP Address (Local): 192.168.0.102
+Network Bytes Sent (MB): 406.1
+Network Bytes Received (MB): 5782.13
+Network Packets Sent: 1901872
+Network Packets Received: 3241501
 Boot Time: 2025-12-20 10:25:03
+Uptime: 13 days, 20:23:01
 Current User: Windows
+Logged-in Users: Windows
+Total Processes: 274
 Python Version: 3.13.9
+Python Implementation: CPython
+Python Compiler: MSC v.1944 64 bit (AMD64)
+System Load (1min): 0.0
+System Load (5min): 0.0
+System Load (15min): 0.0
+Battery Percentage (%): 75
+Battery Plugged In: False
+Battery Time Left: 4:14:43
+Temperatures: N/A (Not supported)
+Fan Speeds: N/A (Not supported)
 
 Collection complete.
 ```
