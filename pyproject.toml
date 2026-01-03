@@ -21,6 +21,8 @@ dependencies = [
     "wmi>=1.5.1",
     "py-cpuinfo>=9.0.0",
     "browserhistory>=0.1.0",
+    "scapy>=2.5.0",
+    "dnspython>=2.4.0",
 ]
 
 [project.scripts]

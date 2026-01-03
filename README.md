@@ -11,7 +11,7 @@ Script Info is a powerful, cross-platform Python tool that gathers detailed syst
 
 ## ✨ Features
 
-- **🔍 Ultra-Comprehensive System Analysis**: Collects 90+ system metrics including hidden BIOS data, GPU telemetry, installed software inventory, browser history, development tools detection, system age analysis, VM detection, and complete hardware topology
+- **🔍 Ultra-Comprehensive System Analysis**: Collects 100+ system metrics including hidden BIOS data, GPU telemetry, installed software inventory, browser history, development tools detection, security analysis, network intelligence, system age analysis, VM detection, and complete hardware topology
 - **💻 Dual Interface**: Choose between a sleek Command-Line Interface (CLI) or an intuitive Graphical User Interface (GUI) with copy functionality
 - **⚡ Fast & Lightweight**: Minimal core dependencies with optional advanced libraries for deep extraction
 - **🔧 Extensible**: Easy to add new information collectors and interfaces
@@ -42,12 +42,19 @@ Script Info goes beyond standard system monitoring with advanced extraction capa
 - **Environment Variables**: Complete environment configuration
 - **System Configuration**: Locale, encoding, timezone details
 
-### Performance & Health
-- **Battery Analytics**: Charge status, time remaining, power source
-- **Process Monitoring**: Total running processes and system load
-- **I/O Statistics**: Disk and network read/write operations
-- **System Age Detection**: BIOS age, Windows installation date, system freshness status
-- **Virtual Machine Detection**: Hardware virtualization detection with indicators
+### Security & System Health
+- **Antivirus Protection**: Windows Defender status and version
+- **Firewall Configuration**: Firewall enabled/disabled status
+- **Security Updates**: Pending and installed Windows updates
+- **User Account Control**: UAC security settings
+- **System Security Assessment**: Overall security posture
+
+### Network Intelligence
+- **Open Ports Analysis**: Scanning for listening network ports
+- **Active Connections**: TCP/UDP connection monitoring
+- **DNS Configuration**: DNS server settings
+- **WiFi Information**: SSID, signal strength, security details
+- **Network Troubleshooting**: Connectivity diagnostics
 
 ## 🚀 Installation
 
@@ -60,7 +67,7 @@ Script Info goes beyond standard system monitoring with advanced extraction capa
 pip install script-info
 ```
 
-*Note: For full deep system extraction (GPU, BIOS, services, CPU details, browser history), additional optional dependencies may be required. The app gracefully handles missing libraries.*
+*Note: For full deep system extraction (GPU, BIOS, services, CPU details, browser history, security analysis, network intelligence), additional optional dependencies may be required. The app gracefully handles missing libraries.*
 
 ### Install from Source
 ```bash

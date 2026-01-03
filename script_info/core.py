@@ -356,6 +356,56 @@ def get_system_info():
     else:
         info['System Type'] = 'Physical Hardware'
 
+    # Security Analysis
+    if WMI_AVAILABLE and platform.system() == 'Windows':
+        try:
+            c = wmi.WMI()
+
+            # Windows Defender Status
+            try:
+                defender = c.Win32_Product(Name="Windows Defender")[0] if c.Win32_Product(Name="Windows Defender") else None
+                if defender:
+                    info['Windows Defender Installed'] = 'Yes'
+                    info['Defender Version'] = defender.Version
+                else:
+                    info['Windows Defender Installed'] = 'No'
+            except:
+                info['Windows Defender Status'] = 'Unable to check'
+
+            # Firewall Status
+            try:
+                firewall = c.Win32_Firewall()[0] if c.Win32_Firewall() else None
+                if firewall:
+                    info['Firewall Enabled'] = 'Yes' if firewall.Enabled else 'No'
+                else:
+                    info['Firewall Status'] = 'Not found'
+            except:
+                info['Firewall Status'] = 'Unable to check'
+
+            # Windows Updates
+            try:
+                updates = c.Win32_QuickFixEngineering()
+                pending_updates = len([u for u in updates if u.InstalledOn is None])
+                info['Pending Windows Updates'] = pending_updates
+                info['Total Installed Updates'] = len(updates)
+            except:
+                info['Windows Updates'] = 'Unable to check'
+
+            # User Account Control
+            try:
+                import winreg
+                key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System")
+                uac_level = winreg.QueryValueEx(key, "EnableLUA")[0]
+                info['UAC Enabled'] = 'Yes' if uac_level else 'No'
+                winreg.CloseKey(key)
+            except:
+                info['UAC Status'] = 'Unable to check'
+
+        except Exception as e:
+            info['Security Analysis'] = f'WMI Error: {str(e)}'
+    else:
+        info['Security Analysis'] = 'WMI not available or not Windows'
+
     # Installed programs (basic, Windows registry via WMI)
     if WMI_AVAILABLE and platform.system() == 'Windows':
         try:
@@ -431,5 +481,59 @@ def get_system_info():
             info['Browser History'] = f'Unable to retrieve: {str(e)}'
     else:
         info['Browser History'] = 'browserhistory not installed'
+
+    # Network Intelligence
+    try:
+        # Open Ports Scan (basic)
+        import socket
+        open_ports = []
+        common_ports = [21, 22, 23, 25, 53, 80, 110, 135, 139, 143, 443, 445, 993, 995, 3389]
+        for port in common_ports[:5]:  # Check first 5 to avoid slow scan
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.settimeout(0.1)
+            result = sock.connect_ex(('127.0.0.1', port))
+            if result == 0:
+                open_ports.append(port)
+            sock.close()
+
+        info['Open Ports (Sample)'] = ', '.join(map(str, open_ports)) if open_ports else 'None found'
+        info['Ports Scanned'] = len(common_ports)
+
+        # Active Network Connections
+        connections = psutil.net_connections()
+        tcp_connections = len([c for c in connections if c.type == socket.SOCK_STREAM])
+        udp_connections = len([c for c in connections if c.type == socket.SOCK_DGRAM])
+
+        info['Active TCP Connections'] = tcp_connections
+        info['Active UDP Connections'] = udp_connections
+        info['Total Network Connections'] = len(connections)
+
+        # DNS Configuration
+        try:
+            import dns.resolver
+            dns_servers = dns.resolver.get_default_resolver().nameservers
+            info['DNS Servers'] = ', '.join(dns_servers)
+        except:
+            info['DNS Servers'] = 'Unable to retrieve'
+
+        # WiFi Information (if available)
+        try:
+            import subprocess
+            result = subprocess.run(['netsh', 'wlan', 'show', 'interfaces'], capture_output=True, text=True, timeout=5)
+            if result.returncode == 0 and 'Name' in result.stdout:
+                # Parse basic WiFi info
+                lines = result.stdout.split('\n')
+                for line in lines:
+                    if 'SSID' in line and 'BSSID' not in line:
+                        info['WiFi SSID'] = line.split(':')[1].strip() if ':' in line else 'Connected'
+                    elif 'Signal' in line:
+                        info['WiFi Signal'] = line.split(':')[1].strip() if ':' in line else 'Unknown'
+            else:
+                info['WiFi Status'] = 'Not connected or unable to retrieve'
+        except:
+            info['WiFi Information'] = 'Unable to retrieve'
+
+    except Exception as e:
+        info['Network Intelligence'] = f'Error: {str(e)}'
 
     return info
