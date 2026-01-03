@@ -6,6 +6,7 @@ import os
 import getpass
 import locale
 import time
+import threading
 import shutil
 import subprocess
 try:
@@ -57,24 +58,47 @@ def get_system_info():
     info['CPU System Time'] = f"{cpu_times.system:.2f}s"
     info['CPU Idle Time'] = f"{cpu_times.idle:.2f}s"
 
-    # Deeper CPU information
-    if CPUINFO_AVAILABLE:
-        try:
-            cpu_details = cpuinfo.get_cpu_info()
-            info['CPU Brand'] = cpu_details.get('brand_raw', 'Unknown')
-            info['CPU Architecture'] = cpu_details.get('arch', 'Unknown')
-            info['CPU Bits'] = cpu_details.get('bits', 'Unknown')
-            info['CPU Vendor'] = cpu_details.get('vendor_id_raw', 'Unknown')
-            info['CPU Family'] = cpu_details.get('family', 'Unknown')
-            info['CPU Model'] = cpu_details.get('model', 'Unknown')
-            info['CPU Stepping'] = cpu_details.get('stepping', 'Unknown')
-            info['CPU L2 Cache'] = cpu_details.get('l2_cache_size', 'Unknown')
-            info['CPU L3 Cache'] = cpu_details.get('l3_cache_size', 'Unknown')
-            info['CPU Flags'] = ', '.join(cpu_details.get('flags', [])[:10]) + ('...' if len(cpu_details.get('flags', [])) > 10 else '')
-        except Exception as e:
-            info['CPU Details'] = f'Unable to retrieve: {str(e)}'
-    else:
-        info['CPU Details'] = 'py-cpuinfo not installed'
+    # Deeper CPU information - temporarily disabled due to hanging issues
+    # if CPUINFO_AVAILABLE:
+    #     try:
+    #         print("Getting CPU info...")
+    #         
+    #         # Use threading to implement timeout for cpuinfo call
+    #         cpu_details = None
+    #         exception = None
+    #         
+    #         def get_cpu_info_thread():
+    #             nonlocal cpu_details, exception
+    #             try:
+    #                 cpu_details = cpuinfo.get_cpu_info()
+    #             except Exception as e:
+    #                 exception = e
+    #         
+    #         thread = threading.Thread(target=get_cpu_info_thread)
+    #         thread.start()
+    #         thread.join(timeout=10)  # 10 second timeout
+    #         
+    #         if thread.is_alive():
+    #             info['CPU Details'] = 'CPU info collection timed out'
+    #         elif exception:
+    #             info['CPU Details'] = f'Unable to retrieve: {str(exception)}'
+    #         else:
+    #             info['CPU Brand'] = cpu_details.get('brand_raw', 'Unknown')
+    #             info['CPU Architecture'] = cpu_details.get('arch', 'Unknown')
+    #             info['CPU Bits'] = cpu_details.get('bits', 'Unknown')
+    #             info['CPU Vendor'] = cpu_details.get('vendor_id_raw', 'Unknown')
+    #             info['CPU Family'] = cpu_details.get('family', 'Unknown')
+    #             info['CPU Model'] = cpu_details.get('model', 'Unknown')
+    #             info['CPU Stepping'] = cpu_details.get('stepping', 'Unknown')
+    #             info['CPU L2 Cache'] = cpu_details.get('l2_cache_size', 'Unknown')
+    #             info['CPU L3 Cache'] = cpu_details.get('l3_cache_size', 'Unknown')
+    #             info['CPU Flags'] = ', '.join(cpu_details.get('flags', [])[:10]) + ('...' if len(cpu_details.get('flags', [])) > 10 else '')
+    #             
+    #     except Exception as e:
+    #         print(f"CPU info error: {e}")
+    #         info['CPU Details'] = f'Unable to retrieve: {str(e)}'
+    # else:
+    info['CPU Details'] = 'CPU info collection temporarily disabled'
 
     # Memory information
     mem = psutil.virtual_memory()

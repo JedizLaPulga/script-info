@@ -18,7 +18,7 @@ Script Info is a powerful, cross-platform Python tool that gathers detailed syst
 - **🌍 Cross-Platform**: Works on Windows, macOS, and Linux with platform-specific enhancements
 - **📊 Rich Output**: Formatted, color-coded results for easy reading and copying
 - **🔒 Deep System Access**: Uses WMI, GPU libraries, and system APIs for hidden information extraction
-- **📋 Copy & Export**: GUI includes copy-to-clipboard functionality and PDF report generation for individual or bulk data export
+- **📋 Copy & Export**: GUI includes copy-to-clipboard functionality and PDF report generation; CLI supports PDF export with --pdf flag
 
 ## � Deep System Extraction
 
@@ -43,9 +43,10 @@ Script Info goes beyond standard system monitoring with advanced extraction capa
 - **System Configuration**: Locale, encoding, timezone details
 
 ### Advanced Reporting
-- **PDF Export**: Generate professional PDF reports with categorized information
+- **PDF Export**: Generate professional PDF reports from both GUI and CLI
 - **Structured Layout**: Organized sections for easy reading and sharing
 - **Timestamped Reports**: Automatic report generation with date/time stamps
+- **CLI Integration**: Command-line PDF generation with --pdf flag
 - **Comprehensive Documentation**: All system metrics in printable format
 
 ## 🚀 Installation
@@ -77,6 +78,11 @@ Get all system information:
 script-info-cli -all
 ```
 
+Export to PDF:
+```bash
+script-info-cli -all --pdf system_report.pdf
+```
+
 Show help:
 ```bash
 script-info-cli -help
@@ -103,6 +109,7 @@ Run directly from source:
 ```bash
 # CLI
 python -m script_info.cli.main -all
+python -m script_info.cli.main -all --pdf report.pdf
 
 # GUI
 python -m script_info.gui.main
