@@ -11,28 +11,38 @@ Script Info is a powerful, cross-platform Python tool that gathers detailed syst
 
 ## ✨ Features
 
-- **🔍 Comprehensive System Analysis**: Collects OS details, CPU specs, memory usage, disk space, network information, and more
-- **💻 Dual Interface**: Choose between a sleek Command-Line Interface (CLI) or an intuitive Graphical User Interface (GUI)
-- **⚡ Fast & Lightweight**: Minimal dependencies, instant results
+- **🔍 Ultra-Comprehensive System Analysis**: Collects 70+ system metrics including hidden BIOS data, GPU telemetry, installed software inventory, and complete hardware topology
+- **💻 Dual Interface**: Choose between a sleek Command-Line Interface (CLI) or an intuitive Graphical User Interface (GUI) with copy functionality
+- **⚡ Fast & Lightweight**: Minimal core dependencies with optional advanced libraries for deep extraction
 - **🔧 Extensible**: Easy to add new information collectors and interfaces
-- **🌍 Cross-Platform**: Works on Windows, macOS, and Linux
-- **📊 Rich Output**: Formatted, color-coded results for easy reading
+- **🌍 Cross-Platform**: Works on Windows, macOS, and Linux with platform-specific enhancements
+- **📊 Rich Output**: Formatted, color-coded results for easy reading and copying
+- **🔒 Deep System Access**: Uses WMI, GPU libraries, and system APIs for hidden information extraction
+- **📋 Copy & Export**: GUI includes copy-to-clipboard functionality for individual or bulk data export
 
-## 📋 System Information Collected
+## � Deep System Extraction
 
-| Category | Details |
-|----------|---------|
-| **Operating System** | Name, version, release, platform, architecture, processor, locale, encoding, timezone |
-| **CPU** | Physical/logical cores, frequency, usage %, user/system/idle times |
-| **Memory** | Total, available, used, usage % (RAM + Swap) |
-| **Storage** | Total/used/free space, usage %, read/write I/O, partitions details |
-| **Network** | Hostname, FQDN, IP, bytes/packets sent/received, interfaces details |
-| **System** | Boot time, uptime, current/logged-in users, total processes, running services |
-| **Hardware** | GPU details (name, memory, usage, temperature), BIOS info, temperatures, fan speeds |
-| **Battery** | Percentage, plugged status, time remaining (if applicable) |
-| **Software** | Installed programs count/sample, environment variables |
-| **Runtime** | Python version, implementation, compiler |
-| **Performance** | System load averages, CPU/memory/disk/network usage |
+Script Info goes beyond standard system monitoring with advanced extraction capabilities:
+
+### Hardware Intelligence
+- **GPU Monitoring**: Real-time GPU usage, memory, and temperature (via GPUtil)
+- **BIOS Information**: Firmware version, manufacturer, release date (via WMI)
+- **Sensor Data**: CPU/GPU temperatures, fan speeds (when available)
+
+### System Architecture
+- **Disk Partitions**: Detailed partition information and usage
+- **Network Interfaces**: Complete network adapter enumeration
+- **System Services**: Running services and their status (Windows)
+
+### Software & Environment
+- **Installed Programs**: Software inventory from system registry
+- **Environment Variables**: Complete environment configuration
+- **System Configuration**: Locale, encoding, timezone details
+
+### Performance & Health
+- **Battery Analytics**: Charge status, time remaining, power source
+- **Process Monitoring**: Total running processes and system load
+- **I/O Statistics**: Disk and network read/write operations
 
 ## 🚀 Installation
 
@@ -44,6 +54,8 @@ Script Info is a powerful, cross-platform Python tool that gathers detailed syst
 ```bash
 pip install script-info
 ```
+
+*Note: For full deep system extraction (GPU, BIOS, services), additional optional dependencies may be required. The app gracefully handles missing libraries.*
 
 ### Install from Source
 ```bash
@@ -72,6 +84,13 @@ Launch the GUI application:
 ```bash
 script-info-gui
 ```
+
+**GUI Features:**
+- Visual system information display with color-coded formatting
+- One-click collection, refresh, and clear functions
+- **Copy All** button to export complete system data to clipboard
+- Selectable text for copying individual information pieces
+- Real-time status updates during data collection
 
 ### Development Usage
 
@@ -142,6 +161,33 @@ Battery Plugged In: False
 Battery Time Left: 4:14:43
 Temperatures: N/A (Not supported)
 Fan Speeds: N/A (Not supported)
+GPU 1 Name: NVIDIA GeForce RTX 4060 Laptop GPU
+GPU 1 Memory Total (GB): 8.0
+GPU 1 Memory Used (GB): 1.2
+GPU 1 Memory Free (GB): 6.8
+GPU 1 Usage (%): 5.0
+GPU 1 Temperature (°C): 45.0
+Disk Partitions Count: 3
+Partition 1 Device: C:
+Partition 1 Mount: C:
+Partition 1 Type: NTFS
+Partition 1 Total (GB): 475.57
+Partition 1 Free (GB): 317.5
+Network Interfaces Count: 5
+Interface 1 Name: Ethernet
+Interface 1 IPv4: 192.168.0.102
+Interface 1 MAC: 00:00:00:00:00:00
+Running Services Count: 128
+Running Services Sample: AdobeARMservice, AGMService, AGSService...
+Environment Variables: {'PATH Entries Count': 25, 'HOME': 'Not set', 'USER': 'Not set', 'USERNAME': 'Windows', 'TEMP': 'C:\\Users\\Windows\\AppData\\Local\\Temp', ...}
+System Locale: English_United States
+System Encoding: cp1252
+Timezone: Eastern Standard Time
+BIOS Version: BIOS Version
+BIOS Manufacturer: Manufacturer
+BIOS Release Date: 20230101
+Installed Programs Count: 85
+Installed Programs Sample: 7-Zip 23.01, Adobe Acrobat Reader DC, Microsoft Edge...
 
 Collection complete.
 ```
@@ -163,7 +209,7 @@ script-info/
 │   │   └── main.py      # CLI interface
 │   └── gui/
 │       ├── __init__.py
-│       └── main.py      # GUI interface
+│       └── main.py      # GUI interface with copy functionality
 ├── tests/               # Unit tests
 ├── docs/                # Documentation
 ├── requirements.txt     # Python dependencies (psutil, colorama, GPUtil, WMI)
