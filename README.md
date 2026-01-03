@@ -11,7 +11,7 @@ Script Info is a powerful, cross-platform Python tool that gathers detailed syst
 
 ## ✨ Features
 
-- **🔍 Ultra-Comprehensive System Analysis**: Collects 70+ system metrics including hidden BIOS data, GPU telemetry, installed software inventory, and complete hardware topology
+- **🔍 Ultra-Comprehensive System Analysis**: Collects 90+ system metrics including hidden BIOS data, GPU telemetry, installed software inventory, browser history, development tools detection, system age analysis, VM detection, and complete hardware topology
 - **💻 Dual Interface**: Choose between a sleek Command-Line Interface (CLI) or an intuitive Graphical User Interface (GUI) with copy functionality
 - **⚡ Fast & Lightweight**: Minimal core dependencies with optional advanced libraries for deep extraction
 - **🔧 Extensible**: Easy to add new information collectors and interfaces
@@ -27,6 +27,7 @@ Script Info goes beyond standard system monitoring with advanced extraction capa
 ### Hardware Intelligence
 - **GPU Monitoring**: Real-time GPU usage, memory, and temperature (via GPUtil)
 - **BIOS Information**: Firmware version, manufacturer, release date (via WMI)
+- **Deep CPU Details**: Brand, architecture, cache sizes, flags, vendor info (via cpuinfo)
 - **Sensor Data**: CPU/GPU temperatures, fan speeds (when available)
 
 ### System Architecture
@@ -36,6 +37,8 @@ Script Info goes beyond standard system monitoring with advanced extraction capa
 
 ### Software & Environment
 - **Installed Programs**: Software inventory from system registry
+- **Development Tools**: Detection and versioning of GCC, Go, Clang, Perl, Java, Python, Node.js, etc.
+- **Browser History**: History counts and last visited sites for Chrome, Firefox, Edge, etc.
 - **Environment Variables**: Complete environment configuration
 - **System Configuration**: Locale, encoding, timezone details
 
@@ -43,6 +46,8 @@ Script Info goes beyond standard system monitoring with advanced extraction capa
 - **Battery Analytics**: Charge status, time remaining, power source
 - **Process Monitoring**: Total running processes and system load
 - **I/O Statistics**: Disk and network read/write operations
+- **System Age Detection**: BIOS age, Windows installation date, system freshness status
+- **Virtual Machine Detection**: Hardware virtualization detection with indicators
 
 ## 🚀 Installation
 
@@ -55,7 +60,7 @@ Script Info goes beyond standard system monitoring with advanced extraction capa
 pip install script-info
 ```
 
-*Note: For full deep system extraction (GPU, BIOS, services), additional optional dependencies may be required. The app gracefully handles missing libraries.*
+*Note: For full deep system extraction (GPU, BIOS, services, CPU details, browser history), additional optional dependencies may be required. The app gracefully handles missing libraries.*
 
 ### Install from Source
 ```bash
@@ -212,7 +217,7 @@ script-info/
 │       └── main.py      # GUI interface with copy functionality
 ├── tests/               # Unit tests
 ├── docs/                # Documentation
-├── requirements.txt     # Python dependencies (psutil, colorama, GPUtil, WMI)
+├── requirements.txt     # Python dependencies (psutil, colorama, GPUtil, WMI, cpuinfo, browserhistory)
 ├── pyproject.toml       # Package configuration
 └── README.md           # This file
 ```
