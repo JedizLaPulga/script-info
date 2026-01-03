@@ -22,16 +22,17 @@ Script Info is a powerful, cross-platform Python tool that gathers detailed syst
 
 | Category | Details |
 |----------|---------|
-| **Operating System** | Name, version, release, platform, architecture, processor |
+| **Operating System** | Name, version, release, platform, architecture, processor, locale, encoding, timezone |
 | **CPU** | Physical/logical cores, frequency, usage %, user/system/idle times |
 | **Memory** | Total, available, used, usage % (RAM + Swap) |
-| **Storage** | Total/used/free space, usage %, read/write I/O |
-| **Network** | Hostname, FQDN, IP, bytes/packets sent/received |
-| **System** | Boot time, uptime, current/logged-in users, total processes |
+| **Storage** | Total/used/free space, usage %, read/write I/O, partitions details |
+| **Network** | Hostname, FQDN, IP, bytes/packets sent/received, interfaces details |
+| **System** | Boot time, uptime, current/logged-in users, total processes, running services |
+| **Hardware** | GPU details (name, memory, usage, temperature), BIOS info, temperatures, fan speeds |
 | **Battery** | Percentage, plugged status, time remaining (if applicable) |
-| **Hardware Sensors** | Temperatures, fan speeds (if supported) |
+| **Software** | Installed programs count/sample, environment variables |
 | **Runtime** | Python version, implementation, compiler |
-| **Performance** | System load averages (Unix-like systems) |
+| **Performance** | System load averages, CPU/memory/disk/network usage |
 
 ## 🚀 Installation
 
@@ -150,11 +151,13 @@ Collection complete.
 
 ## 🛠️ Development
 
+## 🛠️ Development
+
 ### Project Structure
 ```
 script-info/
 ├── script_info/
-│   ├── core.py          # Core system information collection
+│   ├── core.py          # Core system information collection (psutil, GPUtil, WMI)
 │   ├── cli/
 │   │   ├── __init__.py
 │   │   └── main.py      # CLI interface
@@ -163,7 +166,7 @@ script-info/
 │       └── main.py      # GUI interface
 ├── tests/               # Unit tests
 ├── docs/                # Documentation
-├── requirements.txt     # Python dependencies
+├── requirements.txt     # Python dependencies (psutil, colorama, GPUtil, WMI)
 ├── pyproject.toml       # Package configuration
 └── README.md           # This file
 ```

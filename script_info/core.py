@@ -4,6 +4,18 @@ import socket
 import datetime
 import os
 import getpass
+import locale
+import time
+try:
+    import GPUtil
+    GPU_AVAILABLE = True
+except ImportError:
+    GPU_AVAILABLE = False
+try:
+    import wmi
+    WMI_AVAILABLE = True
+except ImportError:
+    WMI_AVAILABLE = False
 
 
 def get_system_info():
@@ -115,18 +127,6 @@ def get_system_info():
     else:
         info['Battery'] = 'N/A (Desktop)'
 
-    # Temperatures (if available)
-    try:
-        temps = psutil.sensors_temperatures()
-        if temps:
-            for name, entries in temps.items():
-                for entry in entries:
-                    info[f'Temperature ({name})'] = f"{entry.current}°C"
-        else:
-            info['Temperatures'] = 'N/A'
-    except AttributeError:
-        info['Temperatures'] = 'N/A (Not supported)'
-
     # Fan speeds (if available)
     try:
         fans = psutil.sensors_fans()
@@ -138,5 +138,113 @@ def get_system_info():
             info['Fan Speeds'] = 'N/A'
     except AttributeError:
         info['Fan Speeds'] = 'N/A (Not supported)'
+
+    # GPU information
+    if GPU_AVAILABLE:
+        try:
+            gpus = GPUtil.getGPUs()
+            if gpus:
+                for i, gpu in enumerate(gpus):
+                    info[f'GPU {i+1} Name'] = gpu.name
+                    info[f'GPU {i+1} Memory Total (GB)'] = round(gpu.memoryTotal / 1024, 2)
+                    info[f'GPU {i+1} Memory Used (GB)'] = round(gpu.memoryUsed / 1024, 2)
+                    info[f'GPU {i+1} Memory Free (GB)'] = round(gpu.memoryFree / 1024, 2)
+                    info[f'GPU {i+1} Usage (%)'] = round(gpu.load * 100, 1)
+                    info[f'GPU {i+1} Temperature (°C)'] = round(gpu.temperature, 1)
+            else:
+                info['GPU'] = 'No GPU detected'
+        except Exception as e:
+            info['GPU'] = f'GPU info unavailable: {str(e)}'
+    else:
+        info['GPU'] = 'GPUtil not installed'
+
+    # Disk partitions
+    partitions = psutil.disk_partitions()
+    if partitions:
+        info['Disk Partitions Count'] = len(partitions)
+        for i, part in enumerate(partitions[:5]):  # Limit to 5 partitions
+            info[f'Partition {i+1} Device'] = part.device
+            info[f'Partition {i+1} Mount'] = part.mountpoint
+            info[f'Partition {i+1} Type'] = part.fstype
+            try:
+                usage = psutil.disk_usage(part.mountpoint)
+                info[f'Partition {i+1} Total (GB)'] = round(usage.total / (1024**3), 2)
+                info[f'Partition {i+1} Free (GB)'] = round(usage.free / (1024**3), 2)
+            except:
+                info[f'Partition {i+1} Usage'] = 'Unable to access'
+    else:
+        info['Disk Partitions'] = 'None found'
+
+    # Network interfaces
+    net_if = psutil.net_if_addrs()
+    if net_if:
+        info['Network Interfaces Count'] = len(net_if)
+        for i, (name, addrs) in enumerate(list(net_if.items())[:3]):  # Limit to 3 interfaces
+            info[f'Interface {i+1} Name'] = name
+            ipv4 = next((addr.address for addr in addrs if addr.family.name == 'AF_INET'), 'N/A')
+            info[f'Interface {i+1} IPv4'] = ipv4
+            mac = next((addr.address for addr in addrs if addr.family.name == 'AF_LINK'), 'N/A')
+            info[f'Interface {i+1} MAC'] = mac
+    else:
+        info['Network Interfaces'] = 'None found'
+
+    # System services (Windows)
+    if WMI_AVAILABLE and platform.system() == 'Windows':
+        try:
+            c = wmi.WMI()
+            services = c.Win32_Service()
+            running_services = [s.Name for s in services if s.State == 'Running']
+            info['Running Services Count'] = len(running_services)
+            info['Running Services Sample'] = ', '.join(running_services[:5]) + ('...' if len(running_services) > 5 else '')
+        except Exception as e:
+            info['Services'] = f'Unable to retrieve: {str(e)}'
+    else:
+        info['Services'] = 'WMI not available or not Windows'
+
+    # Environment variables (key ones)
+    key_env_vars = ['PATH', 'HOME', 'USER', 'USERNAME', 'TEMP', 'TMP', 'LANG', 'SHELL', 'COMPUTERNAME', 'USERDOMAIN']
+    env_info = {}
+    for var in key_env_vars:
+        value = os.environ.get(var, 'Not set')
+        if var == 'PATH':
+            paths = value.split(os.pathsep) if value != 'Not set' else []
+            env_info['PATH Entries Count'] = len(paths)
+        else:
+            env_info[var] = value[:50] + '...' if len(str(value)) > 50 else value
+    info['Environment Variables'] = env_info
+
+    # Locale and timezone
+    try:
+        info['System Locale'] = locale.getlocale()[0] or 'Unknown'
+        info['System Encoding'] = locale.getpreferredencoding()
+    except:
+        info['System Locale'] = 'Unable to determine'
+    info['Timezone'] = time.tzname[0] if time.tzname else 'Unknown'
+
+    # BIOS info via WMI
+    if WMI_AVAILABLE and platform.system() == 'Windows':
+        try:
+            c = wmi.WMI()
+            bios = c.Win32_BIOS()[0]
+            info['BIOS Version'] = bios.Version
+            info['BIOS Manufacturer'] = bios.Manufacturer
+            info['BIOS Release Date'] = bios.ReleaseDate.split('.')[0] if bios.ReleaseDate else 'Unknown'
+        except Exception as e:
+            info['BIOS'] = f'Unable to retrieve: {str(e)}'
+    else:
+        info['BIOS'] = 'WMI not available or not Windows'
+
+    # Installed programs (basic, Windows registry via WMI)
+    if WMI_AVAILABLE and platform.system() == 'Windows':
+        try:
+            c = wmi.WMI()
+            programs = c.Win32_Product()
+            installed_programs = [p.Name for p in programs[:10]]  # Limit to 10
+            info['Installed Programs Count'] = len(programs)
+            info['Installed Programs Sample'] = ', '.join(installed_programs) + ('...' if len(programs) > 10 else '')
+        except Exception as e:
+            info['Installed Programs'] = f'Unable to retrieve: {str(e)}'
+    else:
+        info['Installed Programs'] = 'WMI not available or not Windows'
 
     return info
