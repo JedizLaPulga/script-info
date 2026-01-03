@@ -23,6 +23,7 @@ dependencies = [
     "browserhistory>=0.1.0",
     "scapy>=2.5.0",
     "dnspython>=2.4.0",
+    "reportlab>=4.0.0",
 ]
 
 [project.scripts]

@@ -18,7 +18,7 @@ Script Info is a powerful, cross-platform Python tool that gathers detailed syst
 - **🌍 Cross-Platform**: Works on Windows, macOS, and Linux with platform-specific enhancements
 - **📊 Rich Output**: Formatted, color-coded results for easy reading and copying
 - **🔒 Deep System Access**: Uses WMI, GPU libraries, and system APIs for hidden information extraction
-- **📋 Copy & Export**: GUI includes copy-to-clipboard functionality for individual or bulk data export
+- **📋 Copy & Export**: GUI includes copy-to-clipboard functionality and PDF report generation for individual or bulk data export
 
 ## � Deep System Extraction
 
@@ -42,19 +42,11 @@ Script Info goes beyond standard system monitoring with advanced extraction capa
 - **Environment Variables**: Complete environment configuration
 - **System Configuration**: Locale, encoding, timezone details
 
-### Security & System Health
-- **Antivirus Protection**: Windows Defender status and version
-- **Firewall Configuration**: Firewall enabled/disabled status
-- **Security Updates**: Pending and installed Windows updates
-- **User Account Control**: UAC security settings
-- **System Security Assessment**: Overall security posture
-
-### Network Intelligence
-- **Open Ports Analysis**: Scanning for listening network ports
-- **Active Connections**: TCP/UDP connection monitoring
-- **DNS Configuration**: DNS server settings
-- **WiFi Information**: SSID, signal strength, security details
-- **Network Troubleshooting**: Connectivity diagnostics
+### Advanced Reporting
+- **PDF Export**: Generate professional PDF reports with categorized information
+- **Structured Layout**: Organized sections for easy reading and sharing
+- **Timestamped Reports**: Automatic report generation with date/time stamps
+- **Comprehensive Documentation**: All system metrics in printable format
 
 ## 🚀 Installation
 
@@ -101,6 +93,7 @@ script-info-gui
 - Visual system information display with color-coded formatting
 - One-click collection, refresh, and clear functions
 - **Copy All** button to export complete system data to clipboard
+- **Download PDF** button to generate professional PDF reports
 - Selectable text for copying individual information pieces
 - Real-time status updates during data collection
 
